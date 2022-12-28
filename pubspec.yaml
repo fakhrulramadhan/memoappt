@@ -1,0 +1,44 @@
+name: memoapp
+version: 1.0.0+1
+publish_to: none
+description: A new Flutter project.
+environment: 
+  sdk: '>=2.16.2 <3.0.0'
+
+dependencies: 
+  cupertino_icons: ^1.0.2
+  get: 4.6.5
+  sqflite: 2.0.1
+  path_provider: 2.0.11
+  flutter_launcher_icons: 0.10.0
+  google_fonts: 3.0.1
+  lottie: 1.2.0
+  flutter: 
+    sdk: flutter
+
+dev_dependencies: 
+  flutter_lints: ^1.0.0
+  flutter_test: 
+    sdk: flutter
+
+flutter_icons: 
+  android: launcher_icon
+  image_path: assets/icons/writing.png
+  web: 
+    image_path: assets/icons/writing.png
+    background_color: '#fffffff'
+    theme_color: '#BBFF01FD'
+    generate: true
+  windows: 
+    image_path: assets/icons/writing.png
+    generate: true
+    icon_size: 48
+  ios: true
+  min_sdk_android: 21
+
+flutter:
+  assets:
+  - assets/lottie/
+  - assets/fonts/
+  uses-material-design: true
+

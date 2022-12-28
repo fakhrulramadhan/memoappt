@@ -1,0 +1,110 @@
+import 'dart:math';
+
+import 'package:flutter/material.dart';
+
+import 'package:get/get.dart';
+import 'package:memoapp/app/data/models/memo_model.dart';
+import 'package:memoapp/app/routes/app_pages.dart';
+
+import '../controllers/home_controller.dart';
+
+import 'package:lottie/lottie.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+class HomeView extends GetView<HomeController> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: Icon(Icons.notes),
+        title: Text(
+          'Memo App',
+          style: GoogleFonts.redHatDisplay(
+              fontSize: 25, fontWeight: FontWeight.w400),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.orange,
+      ),
+      body: FutureBuilder(
+          future: controller.dapatSemuamemo(),
+          builder: (context, snap) {
+            if (snap.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: const CircularProgressIndicator(),
+              );
+            }
+            return Obx(() => (controller.semuaMemo.length == 0)
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 150,
+                          width: 150,
+                          child: Lottie.asset("assets/lottie/nothing.json",
+                              fit: BoxFit.contain),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text("Belum Ada Memo Nih \n Yuk Bikin Memo",
+                            style: GoogleFonts.comicNeue(fontSize: 15))
+                      ],
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: controller.semuaMemo.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      //jika tidak ada data, maka muncul teks
+                      Memo memo = controller.semuaMemo[index];
+                      return ListTile(
+                        onTap: () {
+                          Get.toNamed(Routes.EDIT_MEMO, arguments: memo);
+                        },
+                        leading: ConstrainedBox(
+                          constraints: const BoxConstraints(
+                              minWidth: 49,
+                              maxWidth: 50,
+                              minHeight: 100,
+                              maxHeight: 105),
+                          child: CircleAvatar(
+                            child: Text(
+                              "${memo.id}",
+                              style: GoogleFonts.dmSerifText(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.black),
+                            ),
+                            backgroundColor: Color.fromARGB(
+                                Random().nextInt(255),
+                                Random().nextInt(255),
+                                Random().nextInt(255),
+                                Random().nextInt(255)),
+                          ),
+                        ),
+                        title: Text(
+                          "${memo.isi}",
+                          style: GoogleFonts.playfairDisplay(
+                              fontSize: 20, fontWeight: FontWeight.w300),
+                        ),
+                        subtitle: Text(
+                          "${memo.judul}",
+                          style: GoogleFonts.notoSerifDisplay(
+                              fontSize: 20, fontWeight: FontWeight.w400),
+                        ),
+                        // trailing: IconButton(
+                        //     onPressed: () {}, icon: const Icon(Icons.delete)),
+                      );
+                    },
+                  ));
+          }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.toNamed(Routes.TAMBAH_MEMO);
+        },
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
